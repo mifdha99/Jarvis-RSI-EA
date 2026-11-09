@@ -1,0 +1,32 @@
+name: Compile Jarvis RSI EA
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Compile MQL5
+        uses: psyb0t/docker-mql-compiler@v0.5.5
+        with:
+          paths: Jarvis_RSI_EA.mq5
+          werror: true
+
+      - name: Upload EX5
+        uses: actions/upload-artifact@v4
+        with:
+          name: Jarvis-RSI-EA-EX5
+          path: Jarvis_RSI_EA.ex5
+          if-no-files-found: error
+          retention-days: 7
